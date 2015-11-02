@@ -4,7 +4,9 @@
  *    - forked from http://github.com/zuk/jquery.inview/
  */
 (function (factory) {
-  if (typeof define == 'function' && define.amd) {
+  'use strict';
+  var define;
+  if (typeof define === 'function' && define.amd) {
     // AMD
     define(['jquery'], factory);
   } else if (typeof exports === 'object') {
@@ -15,15 +17,16 @@
     factory(jQuery);
   }
 }(function ($) {
+  'use strict';
   var inviewObjects = {}, viewportSize, viewportOffset,
       d = document, w = window, documentElement = d.documentElement, expando = $.expando, timer;
 
   $.event.special.inview = {
     add: function(data) {
-      inviewObjects[data.guid + "-" + this[expando]] = { data: data, $element: $(this) };
+      inviewObjects[data.guid + '-' + this[expando]] = { data: data, $element: $(this) };
 
       // Use setInterval in order to also make sure this captures elements within
-      // "overflow:scroll" elements or elements that appeared in the dom tree due to
+      // 'overflow:scroll' elements or elements that appeared in the dom tree due to
       // dom manipulation and reflow
       // old: $(window).scroll(checkInView);
       //
@@ -38,7 +41,7 @@
     },
 
     remove: function(data) {
-      try { delete inviewObjects[data.guid + "-" + this[expando]]; } catch(e) {}
+      try { delete inviewObjects[data.guid + '-' + this[expando]]; } catch(e) {}
 
       // Clear interval when we no longer have any elements listening
       if ($.isEmptyObject(inviewObjects)) {
@@ -123,7 +126,7 @@
           visiblePartY = (viewportOffset.top > elementOffset.top ?
             'bottom' : (viewportOffset.top + viewportSize.height) < (elementOffset.top + elementSize.height) ?
             'top' : 'both');
-          visiblePartsMerged = visiblePartX + "-" + visiblePartY;
+          visiblePartsMerged = visiblePartX + '-' + visiblePartY;
           if (!inView || inView !== visiblePartsMerged) {
             $element.data('inview', visiblePartsMerged).trigger('inview', [true, visiblePartX, visiblePartY]);
           }
@@ -134,13 +137,13 @@
     }
   }
 
-  $(w).bind("scroll resize scrollstop", function() {
+  $(w).bind('scroll resize scrollstop', function() {
     viewportSize = viewportOffset = null;
   });
 
-  // IE < 9 scrolls to focused elements without firing the "scroll" event
+  // IE < 9 scrolls to focused elements without firing the 'scroll' event
   if (!documentElement.addEventListener && documentElement.attachEvent) {
-    documentElement.attachEvent("onfocusin", function() {
+    documentElement.attachEvent('onfocusin', function() {
       viewportOffset = null;
     });
   }
